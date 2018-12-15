@@ -85,10 +85,12 @@ def getTags(keyword):
 
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets' )
 
-    options = Options()
-    options.headless = True
+    chrome_options = Options()
+    #options.headless = True
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
 
-    browser = webdriver.Chrome(chrome_options = options,  executable_path = path + '/chromedriver')
+    browser = webdriver.Chrome(chrome_options = chrome_options,  executable_path = path + '/chromedriver')
     base_url = "https://www.all-hashtag.com/hashtag-generator.php"
     browser.get (base_url)
 
