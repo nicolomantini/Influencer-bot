@@ -88,7 +88,7 @@ def getTags(keyword):
     options = Options()
     options.headless = True
 
-    browser = webdriver.Chrome(chrome_options = options,  executable_path = path + '/chromedriver.exe')
+    browser = webdriver.Chrome(chrome_options = options,  executable_path = path + '/chromedriver')
     base_url = "https://www.all-hashtag.com/hashtag-generator.php"
     browser.get (base_url)
 
