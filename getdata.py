@@ -8,7 +8,6 @@ import time
 import os
 import uuid
 import shutil
-import pyperclip
 
 
 
