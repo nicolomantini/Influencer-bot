@@ -1,5 +1,5 @@
 # Influencer-bot
-Instagram Influencer bot, that looks for pictures online and post them toghether with a quote.
+Instagram Influencer bot, that looks for pictures online and post them toghether with a caption.
 
 # Usage
 1. input your username, password, keywords, posting time, proxy, folder where to save pictures
