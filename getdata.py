@@ -8,7 +8,7 @@ import time
 import os
 import uuid
 import shutil
-
+import json
 
 
 def getQuotes(keyword):
@@ -79,29 +79,75 @@ def downloader(url, path):
     
 
 
-def getTags(keyword):
+def getTags(keyword, smart_hashtags, keywords):
 
-    from selenium.webdriver.common.action_chains import ActionChains
 
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets' )
+    if smart_hashtags == False : 
 
-    chrome_options = Options()
-    #options.headless = True
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets' )
 
-    browser = webdriver.Chrome(chrome_options = chrome_options,  executable_path = path + '/chromedriver')
-    base_url = "https://www.all-hashtag.com/hashtag-generator.php"
-    browser.get (base_url)
+        chrome_options = Options()
+        #options.headless = True
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        print(path)
+        browser = webdriver.Chrome(chrome_options = chrome_options,  executable_path = path + '/chromedriver')
+        base_url = "https://www.all-hashtag.com/hashtag-generator.php"
+        browser.get (base_url)
 
-    user_field = browser.find_element_by_id("keyword")
-    user_field.send_keys(keyword)
-    user_field.submit()
-    time.sleep (15)
-    soup = BeautifulSoup(browser.page_source, 'lxml')
-    tags = soup.find ('div', class_ = 'copy-hashtags').text
-    tagString = " ".join(tags.split())
+        user_field = browser.find_element_by_id("keyword")
+        user_field.send_keys(keyword)
+        user_field.submit()
+        time.sleep (15)
+        soup = BeautifulSoup(browser.page_source, 'lxml')
+        tags = soup.find ('div', class_ = 'copy-hashtags').text
+        tagString = " ".join(tags.split())
     
+
+    elif smart_hashtags == True :
+
+        tags = keywords
+        smart_tags = set_smart_hashtags(tags)
+        
+        if len(smart_tags) > 30:
+            tagString = random.sample(smart_tags, 30)
+        
+        else:
+            tagString = smart_tags
+        
     return tagString
 
 
+
+
+
+def set_smart_hashtags(tags, limit=3, log_tags=True) :
+
+        smart_hashtags = []
+
+        """Generate smart hashtags based on https://displaypurposes.com/"""
+        """ranking, banned and spammy tags are filtered out."""
+
+        if tags is None:
+            print('set_smart_hashtags is misconfigured')
+            return
+
+        for tag in tags:
+            req = requests.get(
+                u'https://d212rkvo8t62el.cloudfront.net/tag/{}'.format(tag))
+            data = json.loads(req.text)
+
+            if data['tagExists'] is True:
+                random_tags = random.sample(data['results'],limit)
+                for item in random_tags:
+                    smart_hashtags.append(item['tag'])
+
+                if log_tags is True:
+                    for item in smart_hashtags:
+                        print(u'[smart hashtag generated: {}]'.format(item))
+            else:
+                print(u'Too few results for #{} tag'.format(tag))
+
+        # delete duplicated tags
+        smart_hashtags = list(set(smart_hashtags))
+        return smart_hashtags

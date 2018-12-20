@@ -3,14 +3,15 @@ import schedule
 import time
 import random
 import os
-import inputdata
 import datetime
-from getdata import getQuotes, getPhotos, getTags
+from getdata import getQuotes, getPhotos, getTags, set_smart_hashtags
 
 # *********************************************************************
 # INPUT
 # *********************************************************************
-keywords = ['sea', 'ocean', 'dolphins', 'whales', 'shark']
+keywords = [
+            'keyword1', 'keyword2', 'keyword3'
+            ]
 username = ''
 password = ''
 foldername = 'pictures'
@@ -39,11 +40,16 @@ def upload (username, password, myproxy, mycaption, myphoto):
 
 if __name__ == '__main__':
 
-    # get data
+    # set keyword
     keyword  = random.sample(keywords,1)[0]
+
+    # get data
+    smart_hashtags = True
+    mytags = getTags (keyword, smart_hashtags, keywords)
     myphoto = getPhotos (keyword, foldername)
     myquote = getQuotes(keyword)
-    mytags = getTags (keyword)
+    
+    #create caption
     mycaption =  myquote + '\n.\n.\n.\n.\n.\n' + mytags
 
     # get today date
@@ -60,7 +66,7 @@ if __name__ == '__main__':
     print ('\nposting time: ', ptime1)
     print('\nmycaption: ' , mycaption)
     print('\nmyphoto: ' , myphoto)
-
+    #upload (username, password, myproxy, mycaption, myphoto)
     while True :
         
         nowtime = datetime.datetime.now()
