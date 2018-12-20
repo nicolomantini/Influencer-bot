@@ -121,7 +121,7 @@ def getTags(keyword, smart_hashtags, keywords):
 
 
 
-def set_smart_hashtags(tags, limit=3, log_tags=True) :
+def set_smart_hashtags(tags, log_tags=True) :
 
         smart_hashtags = []
 
