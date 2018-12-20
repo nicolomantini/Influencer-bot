@@ -138,7 +138,8 @@ def set_smart_hashtags(tags, limit=3, log_tags=True) :
             data = json.loads(req.text)
 
             if data['tagExists'] is True:
-                random_tags = random.sample(data['results'],limit)
+                random_tags = data['results']
+                #random_tags = random.sample(data['results'],limit)
                 for item in random_tags:
                     smart_hashtags.append(item['tag'])
 
