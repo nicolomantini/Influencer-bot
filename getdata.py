@@ -108,12 +108,14 @@ def getTags(keyword, smart_hashtags, keywords):
 
         tags = keywords
         smart_tags = set_smart_hashtags(tags)
-        
+        smart_tags = ["#" + elem for elem in smart_tags]
+
         if len(smart_tags) > 30:
-            tagString = random.sample(smart_tags, 30)
+            smart_tags = random.sample(smart_tags, 30)
+            tagString = " ".join(smart_tags)
         
         else:
-            tagString = smart_tags
+            tagString = " ".join(smart_tags)
         
     return tagString
 

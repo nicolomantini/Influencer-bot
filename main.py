@@ -10,7 +10,7 @@ from getdata import getQuotes, getPhotos, getTags, set_smart_hashtags
 # INPUT
 # *********************************************************************
 keywords = [
-            'keyword1', 'keyword2', 'keyword3'
+            'ocean', 'sea', 'keyword3'
             ]
 username = ''
 password = ''
