@@ -7,7 +7,7 @@ Instagram Influencer bot, that looks for pictures online and post them toghether
 3. run main.py
 
 # How it works
-Based on the list of keywords, the bot will choose a randome one and based on this one it will:
+Based on the list of keywords, the bot will choose a random keyword and based on this one it will:
 1) download a photo on unslpash.com
 2) select a quote from brainyquotes.com
 3) pick a list oh tags from all-hashtag.com.
@@ -17,6 +17,9 @@ With all this material, it will create e post (photo + caption) and post it at a
 
 For more info on the results you can check this article:
 https://medium.com/xplor8/social-network-or-bot-network-1ec5839dd3c8
+
+and this profile:
+https://www.instagram.com/juliodelmar.ph/
 
 Enjoy!
 /Nico
