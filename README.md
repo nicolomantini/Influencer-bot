@@ -15,5 +15,8 @@ Based on the list of keywords, the bot will choose a randome one and based on th
 
 With all this material, it will create e post (photo + caption) and post it at a random time, within the list of posting hours.
 
+For more info on the results you can check this article:
+https://medium.com/xplor8/social-network-or-bot-network-1ec5839dd3c8
+
 Enjoy!
 /Nico
