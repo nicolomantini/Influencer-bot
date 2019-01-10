@@ -29,6 +29,8 @@ def upload (username, password, myproxy, mycaption, myphoto):
     # If the image is not, it crops/scales to 640x640 by the middle
     # TODO: prevent resizing period if image is already the correct ratio to save resources
     # TODO: Figure out a better way of resizing to make sure the entire picture is included
+    # TODO: Perhaps create an option on how to handle images out of spec?
+
     print("Resizing the image!")
     try:
         with open(myphoto, 'r+b') as f:
@@ -42,17 +44,23 @@ def upload (username, password, myproxy, mycaption, myphoto):
     # upload
     try:
         api = InstagramAPI(username, password)
-        api.setProxy(proxy= myproxy)
+        # If they have set a proxy, lets use it... otherwise
+        # Lets notify them and then continue without it.
+        if myproxy: # proxy is not blank
+            print("Using a proxy!")
+            api.setProxy(proxy= myproxy)
+        else:
+            print("You are using a proxy, this is not recommended!")
         api.login()
         api.uploadPhoto(myphoto, caption=mycaption)
 
         #remove photo
         os.remove(myphoto)
 
-        print('posted!!')
+        print('SUCCESS! Your photo has been posted!')
 
     except :
-        print('failed to upload')
+        print('FAILURE! Your photo was not posted!')
 
 
 if __name__ == '__main__':
@@ -80,10 +88,10 @@ if __name__ == '__main__':
     p_minute = random.randint(10,59)
     ptime1 = datetime.datetime(year, month, day, p_hour, p_minute)
 
-    print ('\nposting time: ', ptime1)
-    print('\nmycaption: ' , mycaption)
-    print('\nmyphoto: ' , myphoto)
-    #upload (username, password, myproxy, mycaption, myphoto)
+    print ('\nThe photo will be posted at: ', ptime1)
+    print('\nYour Caption: ' , mycaption)
+    print('\nThe path for your photo: ' , myphoto)
+#    upload (username, password, myproxy, mycaption, myphoto)
     while True :
 
         nowtime = datetime.datetime.now()
