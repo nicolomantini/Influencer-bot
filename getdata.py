@@ -17,12 +17,15 @@ def getQuotes(keyword):
     quoteArray = []
     authorArray = []
     pageNameArray = [keyword]
-
     base_url = "http://www.brainyquote.com/quotes/keywords/"
     url = base_url + keyword + ".html"
     response_data = requests.get(url).text[:]
     soup = BeautifulSoup(response_data, 'html.parser')
 
+    if soup.find("div", {"class":"monk-box"}):
+        # There is no page for this keyword...
+        print("There are no quotes for this keyword!")
+        exit()
     # Populate quoteArray
     for item in soup.find_all("a", class_="b-qt"):
         quoteArray.append(item.get_text().rstrip())
@@ -44,11 +47,11 @@ def getQuotes(keyword):
 def getPhotos(keyword, foldername):
 
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), foldername)
-    
+
     photoArray = []
 
     base_url = "https://unsplash.com/search/photos/"
-    url = base_url + keyword 
+    url = base_url + keyword
     response_data = requests.get(url).text[:]
     soup = BeautifulSoup(response_data, 'html.parser')
 
@@ -67,22 +70,22 @@ def downloader(url, path):
         time.sleep(10)
         r = requests.get(url, stream=True, timeout=30)
         if r.status_code == 200:
-            print("status code 200")
+            print("Success!")
             with open(os.path.join(path, str(uuid.uuid4()) + '.jpg'), 'wb') as f:
                 shutil.copyfileobj(r.raw, f)
-                
+
                 return f.name
 
     except Exception:
-        print("status code not 200")
+        print("There was an issue downloading the picture!")
         #logging.exception("error")
-    
+
 
 
 def getTags(keyword, smart_hashtags, keywords):
 
 
-    if smart_hashtags == False : 
+    if smart_hashtags == False :
 
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets' )
 
@@ -102,7 +105,7 @@ def getTags(keyword, smart_hashtags, keywords):
         soup = BeautifulSoup(browser.page_source, 'lxml')
         tags = soup.find ('div', class_ = 'copy-hashtags').text
         tagString = " ".join(tags.split())
-    
+
 
     elif smart_hashtags == True :
 
@@ -113,10 +116,10 @@ def getTags(keyword, smart_hashtags, keywords):
         if len(smart_tags) > 30:
             smart_tags = random.sample(smart_tags, 30)
             tagString = " ".join(smart_tags)
-        
+
         else:
             tagString = " ".join(smart_tags)
-        
+
     return tagString
 
 
