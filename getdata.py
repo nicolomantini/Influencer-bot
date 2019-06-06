@@ -41,7 +41,7 @@ def getQuotes(keyword):
         #dest is the language to be translate, 
         #All options are available on google translate url requests as '&tl=es', 
         #in this case it will be translate to spanish, default english is dest=en
-        output_text=translator.translate(input_text, dest='es')
+        output_text=translator.translate(input_text, dest='en')
         text=output_text.text
         double_quotes= '""'
         text=text.join(double_quotes)
