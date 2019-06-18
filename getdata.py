@@ -9,14 +9,22 @@ import os
 import uuid
 import shutil
 import json
+from googletrans import Translator
+from urllib.request import urlopen
+import pprint
 
+
+
+
+translator = Translator()
 
 def getQuotes(keyword):
+    keyword_0=keyword
 
     # Initialize lists
     quoteArray = []
     authorArray = []
-    pageNameArray = [keyword]
+    pageNameArray = [keyword_0]
     base_url = "http://www.brainyquote.com/quotes/keywords/"
     url = base_url + keyword + ".html"
     response_data = requests.get(url).text[:]
@@ -25,10 +33,19 @@ def getQuotes(keyword):
     if soup.find("div", {"class":"monk-box"}):
         # There is no page for this keyword...
         print("There are no quotes for this keyword!")
+        print(keyword_0)
         exit()
     # Populate quoteArray
     for item in soup.find_all("a", class_="b-qt"):
-        quoteArray.append(item.get_text().rstrip())
+        input_text = item.get_text().rstrip()
+        #dest is the language to be translate, 
+        #All options are available on google translate url requests as '&tl=es', 
+        #in this case it will be translate to spanish, default english is dest=en
+        output_text=translator.translate(input_text, dest='en')
+        text=output_text.text
+        double_quotes= '""'
+        text=text.join(double_quotes)
+        quoteArray.append(text)
 
     # Populate authorArray
     for item in soup.find_all("a", class_="bq-aut"):
@@ -56,8 +73,9 @@ def getPhotos(keyword, foldername):
     soup = BeautifulSoup(response_data, 'html.parser')
 
     for item in soup.findAll ('a', title = 'Download photo') :
-        photoArray.append ( item ['href'])
+        photoArray.append(item ['href'])
 
+    
     photo_url = random.sample(photoArray, 1)[0]
 
     filename = downloader(photo_url, path)
@@ -113,8 +131,8 @@ def getTags(keyword, smart_hashtags, keywords):
         smart_tags = set_smart_hashtags(tags)
         smart_tags = ["#" + elem for elem in smart_tags]
 
-        if len(smart_tags) > 30:
-            smart_tags = random.sample(smart_tags, 30)
+        if len(smart_tags) > 20:
+            smart_tags = random.sample(smart_tags, 20)
             tagString = " ".join(smart_tags)
 
         else:
@@ -157,3 +175,5 @@ def set_smart_hashtags(tags, log_tags=True) :
         # delete duplicated tags
         smart_hashtags = list(set(smart_hashtags))
         return smart_hashtags
+
+

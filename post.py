@@ -7,7 +7,7 @@ import random, os
 from getdata import getQuotes, getPhotos, getTags, set_smart_hashtags
 
 
-def prep_post (keywords, posting_hours, foldername) :
+def prep_post (keywords,photo_key,quote_key,foldername) :
     
     # set keyword
     keyword  = random.sample(keywords,1)[0]
@@ -15,8 +15,8 @@ def prep_post (keywords, posting_hours, foldername) :
     # get data
     smart_hashtags = True
     mytags = getTags (keyword, smart_hashtags, keywords)
-    myphoto = getPhotos (keyword, foldername)
-    myquote = getQuotes(keyword)
+    myphoto = getPhotos (photo_key, foldername)
+    myquote = getQuotes(quote_key)
 
     #create caption
     mycaption =  myquote + '\n.\n.\n.\n.\n.\n' + mytags
@@ -28,16 +28,16 @@ def prep_post (keywords, posting_hours, foldername) :
     day = nowtime.day
 
     # set the posting time
-    p_hour = random.sample(posting_hours,1)[0]
-    p_minute = random.randint(10,59)
-    ptime = datetime.datetime(year, month, day, p_hour, p_minute)
+    #p_hour = random.sample(posting_hours,1)[0]
+    #p_minute = random.randint(10,59)
+    #ptime = datetime.datetime(year, month, day, p_hour, p_minute)
 
-    print ('\nThe photo will be posted at: ', ptime)
+    #print ('\nThe photo will be posted at: ', ptime)
     print('\nYour Caption: ' , mycaption)
     print('\nThe path for your photo: ' , myphoto)
 #    upload (username, password, myproxy, mycaption, myphoto)
 
-    return mycaption, myphoto, ptime
+    return mycaption, myphoto
 
 
 def upload (username, password, myproxy, mycaption, myphoto):
@@ -68,12 +68,12 @@ def upload (username, password, myproxy, mycaption, myphoto):
             print("Using a proxy!")
             api.setProxy(proxy= myproxy)
         else:
-            print("You are using a proxy, this is not recommended!")
+            print("You are not using a proxy, this is not recommended!")
         api.login()
         api.uploadPhoto(myphoto, caption=mycaption)
 
         #remove photo
-        os.remove(myphoto)
+        #os.remove(myphoto)
 
         print('SUCCESS! Your photo has been posted!')
 
